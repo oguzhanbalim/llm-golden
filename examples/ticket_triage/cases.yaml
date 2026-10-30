@@ -1,0 +1,159 @@
+# Invented tickets for the offline example. Nothing here comes from a real system.
+suite: ticket-triage
+split_salt: v1
+split_ratios: {train: 0.5, validation: 0.3, test: 0.2}
+cases:
+  - id: label-01
+    input: "Classify as billing, bug, account or shipping: Charged twice for the March plan on my card."
+    tags: [label]
+    graders:
+      - {type: exact, expected: billing, ignore_case: true}
+  - id: label-02
+    input: "Classify as billing, bug, account or shipping: The export button does nothing when I click it."
+    tags: [label]
+    graders:
+      - {type: exact, expected: bug, ignore_case: true}
+  - id: label-03
+    input: "Classify as billing, bug, account or shipping: Please change the email address on my login."
+    tags: [label]
+    graders:
+      - {type: exact, expected: account, ignore_case: true}
+  - id: label-04
+    input: "Classify as billing, bug, account or shipping: My parcel has been stuck at the depot for nine days."
+    tags: [label]
+    graders:
+      - {type: exact, expected: shipping, ignore_case: true}
+  - id: label-05
+    input: "Classify as billing, bug, account or shipping: Your invoice shows the wrong tax number for us."
+    tags: [label]
+    graders:
+      - {type: exact, expected: billing, ignore_case: true}
+  - id: label-06
+    input: "Classify as billing, bug, account or shipping: The dashboard crashes whenever I sort by date."
+    tags: [label]
+    graders:
+      - {type: exact, expected: bug, ignore_case: true}
+  - id: label-07
+    input: "Classify as billing, bug, account or shipping: I cannot reset my password, no email arrives."
+    tags: [label]
+    graders:
+      - {type: exact, expected: account, ignore_case: true}
+  - id: label-08
+    input: "Classify as billing, bug, account or shipping: The courier left the box with the wrong neighbour."
+    tags: [label]
+    graders:
+      - {type: exact, expected: shipping, ignore_case: true}
+  - id: label-09
+    input: "Classify as billing, bug, account or shipping: Why did my renewal price go up this year?"
+    tags: [label]
+    graders:
+      - {type: exact, expected: billing, ignore_case: true}
+  - id: label-10
+    input: "Classify as billing, bug, account or shipping: Search returns a blank page for any query with a slash."
+    tags: [label]
+    graders:
+      - {type: exact, expected: bug, ignore_case: true}
+  - id: label-11
+    input: "Classify as billing, bug, account or shipping: How do I add a second admin to our workspace?"
+    tags: [label]
+    graders:
+      - {type: exact, expected: account, ignore_case: true}
+  - id: label-12
+    input: "Classify as billing, bug, account or shipping: Tracking still says label created after a week."
+    tags: [label]
+    graders:
+      - {type: exact, expected: shipping, ignore_case: true}
+  - id: amount-01
+    input: "Refund due: plan 49.90 minus 10.00 credit. Reply with the amount."
+    tags: [numeric]
+    graders:
+      - {type: numeric, expected: 39.9, abs_tol: 0.01}
+  - id: amount-02
+    input: "Three seats at 12.50 each. Reply with the total."
+    tags: [numeric]
+    graders:
+      - {type: numeric, expected: 37.5, abs_tol: 0.01}
+  - id: amount-03
+    input: "Order of 1,200 units at 3.00 each. Reply with the total."
+    tags: [numeric]
+    graders:
+      - {type: numeric, expected: 3600, abs_tol: 0.5}
+  - id: amount-04
+    input: "Annual fee 600 paid monthly. Reply with one month's fee."
+    tags: [numeric]
+    graders:
+      - {type: numeric, expected: 50, abs_tol: 0.01}
+  - id: amount-05
+    input: "Late fee is 5 percent of 240. Reply with the fee."
+    tags: [numeric]
+    graders:
+      - {type: numeric, expected: 12, abs_tol: 0.01}
+  - id: amount-06
+    input: "Two refunds of 18.25. Reply with the total."
+    tags: [numeric]
+    graders:
+      - {type: numeric, expected: 36.5, abs_tol: 0.01}
+  - id: ack-01
+    input: "Acknowledge ticket 4417 about a failed payment."
+    tags: [regex]
+    graders:
+      - {type: regex, pattern: "TKT-4417\\b"}
+      - {type: regex, pattern: "guarantee|promise", ignore_case: true, must_not_match: true}
+  - id: ack-02
+    input: "Acknowledge ticket 2093 about a broken link."
+    tags: [regex]
+    graders:
+      - {type: regex, pattern: "TKT-2093\\b"}
+      - {type: regex, pattern: "guarantee|promise", ignore_case: true, must_not_match: true}
+  - id: ack-03
+    input: "Acknowledge ticket 7781 about a missing parcel."
+    tags: [regex]
+    graders:
+      - {type: regex, pattern: "TKT-7781\\b"}
+      - {type: regex, pattern: "guarantee|promise", ignore_case: true, must_not_match: true}
+  - id: ack-04
+    input: "Acknowledge ticket 3350 about a login loop."
+    tags: [regex]
+    graders:
+      - {type: regex, pattern: "TKT-3350\\b"}
+      - {type: regex, pattern: "guarantee|promise", ignore_case: true, must_not_match: true}
+  - id: extract-01
+    input: "Extract fields: 'Customer Sample-A says the site is down for everyone.'"
+    tags: [json]
+    graders:
+      - {type: json_schema, schema: {type: object, required: [customer, priority], additionalProperties: false, properties: {customer: {type: string}, priority: {enum: [low, normal, urgent]}}}}
+  - id: extract-02
+    input: "Extract fields: 'Customer Sample-B would like a copy of an old invoice.'"
+    tags: [json]
+    graders:
+      - {type: json_schema, schema: {type: object, required: [customer, priority], additionalProperties: false, properties: {customer: {type: string}, priority: {enum: [low, normal, urgent]}}}}
+  - id: extract-03
+    input: "Extract fields: 'Customer Sample-C reports a typo on the pricing page.'"
+    tags: [json]
+    graders:
+      - {type: json_schema, schema: {type: object, required: [customer, priority], additionalProperties: false, properties: {customer: {type: string}, priority: {enum: [low, normal, urgent]}}}}
+  - id: extract-04
+    input: "Extract fields: 'Customer Sample-D cannot process any orders at all.'"
+    tags: [json]
+    graders:
+      - {type: json_schema, schema: {type: object, required: [customer, priority], additionalProperties: false, properties: {customer: {type: string}, priority: {enum: [low, normal, urgent]}}}}
+  - id: tone-01
+    input: "Apologise to a customer whose order arrived damaged."
+    tags: [judge]
+    graders:
+      - {type: judge, criteria: "The reply is courteous and does not blame the customer."}
+  - id: tone-02
+    input: "Apologise to a customer who waited a week for a reply."
+    tags: [judge]
+    graders:
+      - {type: judge, criteria: "The reply is courteous and does not blame the customer."}
+  - id: tone-03
+    input: "Tell a customer politely that the refund window has closed."
+    tags: [judge]
+    graders:
+      - {type: judge, criteria: "The reply is courteous and does not blame the customer."}
+  - id: tone-04
+    input: "Tell a customer politely that a feature does not exist yet."
+    tags: [judge]
+    graders:
+      - {type: judge, criteria: "The reply is courteous and does not blame the customer."}
